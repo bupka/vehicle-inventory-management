@@ -7,5 +7,31 @@
     <link rel="stylesheet" href="/styles/style.css" />
     <script src="/scripts/app.js" defer></script>
   </head>
-  <body></body>
+  <body>
+    <div class="container">
+      <h1>Vehicle Inventory Management</h1>
+
+      <form id="vehicleForm">
+        <label for="make">Make:</label>
+        <input type="text" name="make" id="make" />
+        <label for="model">Model:</label>
+        <input type="text" name="model" id="model" />
+        <label for="year">Year:</label>
+        <input type="number" name="year" id="year" />
+        <label for="doors">Doors:</label>
+        <input type="number" name="doors" id="doors" />
+
+        <button type="submit">Add Vehicle</button>
+      </form>
+
+      <div id="filterOptions">
+        <label for="filterMake">Filter by Make:</label>
+        <input type="text" name="filterMake" id="filterMake" />
+        <label for="filterYear">Filter by Year:</label>
+        <input type="text" name="filterYear" id="filterYear" />
+      </div>
+
+      <ul id="vehicleList"></ul>
+    </div>
+  </body>
 </html>
