@@ -1,3 +1,5 @@
+import { validationForm } from "./validation.js";
+
 class Vehicle {
   constructor(make, model, year) {
     (this.make = make), (this.model = model), (this.year = year);
@@ -29,55 +31,30 @@ let vehicle = [];
 vehicleForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const make = document.getElementById("make").value;
-  const model = document.getElementById("model").value;
-  const year = document.getElementById("year").value;
-  const doors = document.getElementById("doors").value;
+  const make = document.getElementById("make").value.trim();
+  const model = document.getElementById("model").value.trim();
+  const year = document.getElementById("year").value.trim();
+  const doors = document.getElementById("doors").value.trim();
 
   console.log("test:", make, model, year, doors);
+
+  const validation = validationForm(make, model, year, doors);
+
+  if (validation.isValid) {
+    const car = new Car(make, model, year, doors);
+    vehicle.push(car);
+    displayVehicles(vehicle);
+    vehicleForm.reset();
+  } else {
+    alert(validation.errorMessage);
+  }
 });
 
-function validationForm(make, model, year, doors) {
-  let isValid = true;
-  let errorMessage = "";
-
-  if (!make) {
-    isValid = false;
-    errorMessage += "Make should not be empty.\n";
-  }
-
-  if (!model) {
-    isValid = false;
-    errorMessage += "Model should not be empty.\n";
-  }
-
-  if (!year) {
-    isValid = false;
-    errorMessage += "Year should not be empty.\n";
-  } else {
-    const yearValue = parseInt(year, 10);
-    const currentYear = new Date().getFullYear();
-    const firstCarYear = 1886;
-
-    if (yearValue < firstCarYear || yearValue > currentYear) {
-      isValid = false;
-      errorMessage += `Year should be between ${firstCarYear} and ${currentYear}.\n`;
-    }
-  }
-
-  if (!doors) {
-    isValid = false;
-    errorMessage += "Doors should not be empty.\n";
-  } else {
-    const doorsValue = parseInt(doors, 10);
-    const minDoors = 1;
-    const maxDoors = 6;
-
-    if (doorsValue < minDoors || doorsValue > maxDoors) {
-      isValid = false;
-      errorMessage += `Doors should be between ${minDoors} and ${maxDoors}.\n`;
-    }
-  }
-
-  return { isValid, errorMessage };
+function displayVehicles(vehicles) {
+  vehicleList.innerHTML = "";
+  vehicles.forEach((vehicle) => {
+    const li = document.createElement("li");
+    li.textContent = vehicle.getCarDetails();
+    vehicleList.appendChild(li);
+  });
 }
