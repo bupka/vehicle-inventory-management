@@ -26,7 +26,7 @@ const vehicleList = document.getElementById("vehicleList");
 const filterMake = document.getElementById("filterMake");
 const filterYear = document.getElementById("filterYear");
 
-let vehicle = [];
+let vehicles = [];
 
 vehicleForm.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -42,12 +42,20 @@ vehicleForm.addEventListener("submit", (e) => {
 
   if (validation.isValid) {
     const car = new Car(make, model, year, doors);
-    vehicle.push(car);
-    displayVehicles(vehicle);
+    vehicles.push(car);
+    displayVehicles(vehicles);
     vehicleForm.reset();
   } else {
     alert(validation.errorMessage);
   }
+});
+
+filterMake.addEventListener("input", function () {
+  filterVehicles();
+});
+
+filterYear.addEventListener("input", function () {
+  filterVehicles();
 });
 
 function displayVehicles(vehicles) {
@@ -57,4 +65,18 @@ function displayVehicles(vehicles) {
     li.textContent = vehicle.getCarDetails();
     vehicleList.appendChild(li);
   });
+}
+
+function filterVehicles() {
+  const makeFilter = filterMake.value.toLowerCase();
+  const yearFilter = filterYear.value;
+
+  const filterVehicles = vehicles.filter((vehicle) => {
+    return (
+      (!makeFilter || vehicle.make.toLowerCase().includes(makeFilter)) &&
+      (!yearFilter || vehicle.year == yearFilter)
+    );
+  });
+
+  displayVehicles(filterVehicles);
 }
